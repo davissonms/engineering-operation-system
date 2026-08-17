@@ -52,6 +52,10 @@ entidade, antes → depois, IP e data. (SAAS/FIN)
 **Contexto** — Criou componente, decidiu arquitetura, definiu padrão ou regra?
 Atualize `.ai/` **na mesma entrega**. Decisão que só existe no chat não existe.
 
+**Convenção que se repete vira regra do hook** — se você teve que explicar duas
+vezes "use o componente X em vez de escrever à mão", acrescente em
+`.ai/guard-rules.json`. Documentação não bloqueia escrita; o hook bloqueia.
+
 ---
 
 ## Pare e pergunte quando

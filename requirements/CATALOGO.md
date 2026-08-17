@@ -10,12 +10,12 @@ Versão do padrão: **1.0.0**
 
 | | Quantidade |
 | --- | ---: |
-| **Total de requisitos** | 397 |
+| **Total de requisitos** | 398 |
 | BASE — todo sistema | 324 |
 | SAAS — multiusuário | 29 |
 | FIN — financeiro | 18 |
-| REC — recomendado | 26 |
-| Automatizáveis | 247 |
+| REC — recomendado | 27 |
+| Automatizáveis | 248 |
 
 ## Perfis
 
@@ -534,6 +534,7 @@ Fonte: [`standard/17-DOCUMENTACAO.md`](../standard/17-DOCUMENTACAO.md)
 | `DOC-018` | Feature Contract para funcionalidade relevante | `BASE` | `FEATURES/` com o contrato | Não |
 | `DOC-019` | Divergência entre doc e código corrigida ao ser notada | `BASE` | Sem doc sabidamente falso | Não |
 | `DOC-020` | Documentação em português | `BASE` | Padrão do time | Não |
+| `DOC-021` | Convenção repetida vira regra de hook | `REC` | `.ai/guard-rules.json` cobre o que se explica mais de uma vez | Sim |
 
 ## 18 — Definition of Done
 

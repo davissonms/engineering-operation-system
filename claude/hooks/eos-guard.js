@@ -114,6 +114,76 @@ const RULES = [
   },
 ]
 
+/**
+ * Regras do PROJETO, somadas às globais.
+ *
+ * O hook do EOS conhece segurança — o que vale em qualquer sistema. Mas cada
+ * projeto tem convenções próprias que só ele pode declarar: "todo modal usa
+ * <Modal>", "toda formatação vem de lib/format.ts". Sem um lugar para isso, a
+ * convenção existe só na documentação, e documentação não bloqueia escrita.
+ *
+ * Arquivo esperado: `.ai/guard-rules.json` na raiz do projeto.
+ *
+ *   {
+ *     "rules": [
+ *       {
+ *         "id": "DS-006",
+ *         "label": "Modal escrito à mão",
+ *         "fix": "Use components/Modal — ele traz trap de foco e ESC.",
+ *         "pattern": "fixed inset-0",
+ *         "unless": "components/Modal",
+ *         "paths": "\\.tsx$",
+ *         "skipPaths": "components/Modal\\.tsx$",
+ *         "hard": false
+ *       }
+ *     ]
+ *   }
+ *
+ * `unless` é o que evita o falso positivo mais óbvio: o arquivo que JÁ usa a
+ * abstração correta não deve ser acusado.
+ */
+function loadProjectRules(filePath) {
+  const fs = require('node:fs')
+  const nodePath = require('node:path')
+
+  // Sobe a partir do arquivo até achar `.ai/guard-rules.json`.
+  let dir = nodePath.dirname(filePath)
+  for (let i = 0; i < 12; i++) {
+    const candidate = nodePath.join(dir, '.ai', 'guard-rules.json')
+    try {
+      if (fs.existsSync(candidate)) {
+        const parsed = JSON.parse(fs.readFileSync(candidate, 'utf8'))
+        return (parsed.rules || []).map((r) => ({
+          id: r.id || 'PROJETO',
+          hard: Boolean(r.hard),
+          label: r.label || 'Convenção do projeto',
+          fix: r.fix || '',
+          projeto: true,
+          skip: (p) => {
+            if (r.paths && !new RegExp(r.paths).test(p)) return true
+            if (r.skipPaths && new RegExp(r.skipPaths).test(p)) return true
+            return TEST_FILE.test(p)
+          },
+          // `unless` é avaliado sobre o CONTEÚDO inteiro, não a linha: o import
+          // da abstração correta costuma estar no topo do arquivo.
+          unless: r.unless ? new RegExp(r.unless) : null,
+          test(line) {
+            return new RegExp(r.pattern).test(line)
+          },
+        }))
+      }
+    } catch {
+      // Config inválida não pode travar a escrita — o hook é uma rede de
+      // proteção, não um portão de entrada.
+      return []
+    }
+    const parent = nodePath.dirname(dir)
+    if (parent === dir) break
+    dir = parent
+  }
+  return []
+}
+
 function readStdin() {
   return new Promise((resolve) => {
     let data = ''
@@ -156,6 +226,7 @@ function allow() {
 
   const hits = []
   const lines = content.split('\n')
+  const regras = [...RULES, ...loadProjectRules(path)]
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
@@ -170,7 +241,9 @@ function allow() {
     const janela = lines.slice(Math.max(0, i - 3), i + 1).join('\n')
     if (/eos-disable/.test(janela)) continue
 
-    for (const rule of RULES) {
+    for (const rule of regras) {
+      // `unless`: o arquivo que já usa a abstração correta não é acusado.
+      if (rule.unless && rule.unless.test(content)) continue
       if (rule.skip && rule.skip(path)) continue
       try {
         if (rule.test(line)) {

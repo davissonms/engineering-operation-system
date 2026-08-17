@@ -129,3 +129,4 @@ Documentação desatualizada é pior que ausente — ela mente com autoridade.
 | DOC-018 | Feature Contract para funcionalidade relevante | BASE | `FEATURES/` com o contrato | Não |
 | DOC-019 | Divergência entre doc e código corrigida ao ser notada | BASE | Sem doc sabidamente falso | Não |
 | DOC-020 | Documentação em português | BASE | Padrão do time | Não |
+| DOC-021 | Convenção repetida vira regra de hook | REC | `.ai/guard-rules.json` cobre o que se explica mais de uma vez | Sim |
