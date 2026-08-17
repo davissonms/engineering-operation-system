@@ -160,7 +160,15 @@ function allow() {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
     if (!line.trim() || /^\s*(\/\/|\*|#)/.test(line)) continue // comentários fora
-    if (/eos-disable/.test(line)) continue // escape documentado
+
+    // Escape documentado. Aceito na própria linha OU nas 3 anteriores.
+    //
+    // As linhas anteriores existem porque a linha ofensora costuma estar DENTRO
+    // de um template literal — onde um `//` viraria parte da string. Sem isso,
+    // o escape simplesmente não é aplicável a SQL multilinha, que é justamente
+    // onde os falsos positivos aparecem. Descoberto usando o próprio hook.
+    const janela = lines.slice(Math.max(0, i - 3), i + 1).join('\n')
+    if (/eos-disable/.test(janela)) continue
 
     for (const rule of RULES) {
       if (rule.skip && rule.skip(path)) continue
