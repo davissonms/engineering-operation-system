@@ -18,7 +18,7 @@
 | | |
 | --- | --- |
 | **Versão do padrão** | 1.0.0 |
-| **Local do padrão** | `~/Documents/Engineering-Operating-System/` |
+| **Local do padrão** | `<EOS>` — onde o repositório do padrão foi clonado |
 | **Perfis aplicáveis** | `BASE` · `SAAS` · `FIN` *(remova os que não se aplicam)* |
 
 Perfis:

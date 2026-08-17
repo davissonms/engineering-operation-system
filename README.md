@@ -1,9 +1,11 @@
-# Traveos Engineering Operating System (EOS)
+# Engineering Operating System (EOS)
 
-**Versão 1.0.0** — o padrão de engenharia de software da Traveos/VoaJet.
+**Versão 1.0.0** — um padrão de engenharia para aplicações web, projetado para
+ser aplicado por humanos **e por IA**.
 
-Este repositório é a **fonte da verdade** para como todo sistema web da Traveos é
-projetado, construído, verificado e colocado em produção — por humanos e por IA.
+Este repositório é a **fonte da verdade** de como um sistema web é projetado,
+construído, verificado e colocado em produção. Adote-o como está, ou use-o como
+ponto de partida para o padrão da sua equipe.
 
 > Nenhum sistema está pronto porque a funcionalidade principal funciona.
 > Ele está pronto quando atende à Definition of Done.
@@ -44,7 +46,13 @@ Engineering-Operating-System/
 └── bin/           Ferramentas (regerar catálogo, validar IDs)
 ```
 
+Nos documentos, `<EOS>` significa o diretório onde você clonou este
+repositório. Escolha um lugar estável — ele será referenciado pelos projetos.
+
 ## Como é aplicado globalmente
+
+O EOS foi desenhado para o **Claude Code**, mas funciona com qualquer agente que
+leia arquivos de contexto. A instalação liga o padrão a todos os seus projetos:
 
 ```
 ~/.claude/CLAUDE.md              → regras não-negociáveis, carregadas em TODO projeto
@@ -57,6 +65,9 @@ Engineering-Operating-System/
 
 O `~/.claude/CLAUDE.md` aponta para este repositório. Editar aqui muda o
 comportamento de todos os projetos na próxima sessão.
+
+Sem esse acoplamento, o EOS ainda serve como documentação de referência e
+checklist de revisão — só deixa de ser cobrado automaticamente.
 
 ## Perfis de conformidade
 

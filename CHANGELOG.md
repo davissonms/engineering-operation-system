@@ -1,4 +1,4 @@
-# Changelog — Traveos Engineering Operating System
+# Changelog — Engineering Operating System
 
 Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) · SemVer.
 

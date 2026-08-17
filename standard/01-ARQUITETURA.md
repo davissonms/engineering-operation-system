@@ -93,9 +93,9 @@ cliente, ele pede a `customers` — não faz `SELECT` em `customers`.
 ## Quando dividir em serviços separados
 
 Não divida por padrão. Monolito modular bem organizado é a escolha default e
-suporta a maior parte dos sistemas da Traveos. Só separe quando houver motivo
-real (escala independente, isolamento de falha, time separado, ciclo de deploy
-diferente) — e com ADR.
+suporta a maior parte dos sistemas de porte pequeno e médio. Só separe quando
+houver motivo real (escala independente, isolamento de falha, time separado,
+ciclo de deploy diferente) — e com ADR.
 
 ---
 
