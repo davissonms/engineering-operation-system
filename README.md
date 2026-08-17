@@ -49,25 +49,64 @@ Engineering-Operating-System/
 Nos documentos, `<EOS>` significa o diretório onde você clonou este
 repositório. Escolha um lugar estável — ele será referenciado pelos projetos.
 
-## Como é aplicado globalmente
+---
 
-O EOS foi desenhado para o **Claude Code**, mas funciona com qualquer agente que
-leia arquivos de contexto. A instalação liga o padrão a todos os seus projetos:
+## Instalação
 
-```
-~/.claude/CLAUDE.md              → regras não-negociáveis, carregadas em TODO projeto
-~/.claude/skills/eos/            → protocolo de consulta ao padrão
-~/.claude/skills/eos-init/       → bootstrap do .ai/ em projeto novo
-~/.claude/skills/eos-dod/        → gate de Definition of Done
-~/.claude/skills/eos-check/      → auditoria de um projeto contra o padrão
-~/.claude/hooks/eos-guard.js     → bloqueio automático de violações duras
+Requer **Node.js** e o **Claude Code**.
+
+```bash
+git clone https://github.com/davissonms/engineering-operation-system.git
+cd engineering-operation-system
+bash bin/eos-install.sh
 ```
 
-O `~/.claude/CLAUDE.md` aponta para este repositório. Editar aqui muda o
-comportamento de todos os projetos na próxima sessão.
+Abra uma nova sessão do Claude Code. As regras passam a valer em **todos** os
+seus projetos, em qualquer diretório.
 
-Sem esse acoplamento, o EOS ainda serve como documentação de referência e
-checklist de revisão — só deixa de ser cobrado automaticamente.
+```bash
+bash bin/eos-install.sh --dry-run     # mostra o que faria, sem escrever
+bash bin/eos-install.sh --uninstall   # remove o que foi instalado
+```
+
+### O que o instalador faz
+
+```
+~/.claude/CLAUDE.md              regras não-negociáveis, carregadas em TODO projeto
+~/.claude/skills/eos/            protocolo de consulta ao padrão
+~/.claude/skills/eos-init/       bootstrap do .ai/ em projeto novo
+~/.claude/skills/eos-dod/        gate de Definition of Done
+~/.claude/skills/eos-check/      auditoria de um projeto contra o padrão
+~/.claude/hooks/eos-guard.js     bloqueio automático de violações de segurança
+~/.claude/settings.json          registra o hook em PreToolUse
+```
+
+**Ele não destrói a sua configuração.** Se você já usa o Claude Code:
+
+- `settings.json` é **mesclado**, não sobrescrito — permissões, statusline e
+  hooks de outros frameworks continuam intactos. Se o arquivo estiver
+  corrompido, o instalador aborta em vez de tentar consertar.
+- `CLAUDE.md` recebe o bloco do EOS **delimitado por marcadores**, ao final do
+  que já existir. Suas regras pessoais permanecem.
+- Tudo que seria sobrescrito vira backup com timestamp antes de qualquer escrita.
+- Rodar de novo **atualiza no lugar** — não duplica nada.
+- `--uninstall` remove só o que é do EOS, inclusive de dentro do `CLAUDE.md`
+  e do `settings.json`.
+
+Fonte do que é instalado: [`claude/`](claude/). Editar lá e reinstalar propaga a
+mudança.
+
+### Reinstale ao mover o repositório
+
+Os arquivos instalados guardam o caminho absoluto do clone. Se você mover a
+pasta, rode `bash bin/eos-install.sh` de novo para corrigir os ponteiros.
+
+### Sem o Claude Code
+
+O EOS continua servindo como documentação de referência, checklist de code
+review e catálogo de requisitos para o seu próprio processo — só deixa de ser
+cobrado automaticamente. Qualquer agente que leia arquivos de contexto pode
+apontar para `standard/` e `protocol/`.
 
 ## Perfis de conformidade
 
